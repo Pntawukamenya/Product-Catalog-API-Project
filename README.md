@@ -54,6 +54,188 @@ All endpoints, request/response formats, and examples are documented there using
 - `DELETE /api/products/{id}` — Delete a product
 - `GET    /api/products/report/low-stock` — List low-stock products
 
+## Request/Response Examples & Status Codes
+
+### Categories
+
+#### Create Category
+**POST** `/api/categories`
+```json
+{
+  "name": "Electronics",
+  "description": "All electronic items"
+}
+```
+**Response (201 Created):**
+```json
+{
+  "_id": "687b837f9c6215664b82b23a",
+  "name": "Electronics",
+  "description": "All electronic items",
+  "createdAt": "2025-07-19T11:37:35.390Z",
+  "updatedAt": "2025-07-19T11:37:35.390Z"
+}
+```
+
+#### Get All Categories
+**GET** `/api/categories`
+**Response (200 OK):**
+```json
+[
+  {
+    "_id": "687b837f9c6215664b82b23a",
+    "name": "Electronics",
+    "description": "All electronic items",
+    "createdAt": "2025-07-19T11:37:35.390Z",
+    "updatedAt": "2025-07-19T11:37:35.390Z"
+  }
+]
+```
+
+#### Update Category
+**PUT** `/api/categories/{id}`
+```json
+{
+  "name": "Electronics & Gadgets",
+  "description": "Updated description"
+}
+```
+**Response (200 OK):**
+```json
+{
+  "_id": "687b837f9c6215664b82b23a",
+  "name": "Electronics & Gadgets",
+  "description": "Updated description",
+  "createdAt": "2025-07-19T11:37:35.390Z",
+  "updatedAt": "2025-07-19T11:37:35.390Z"
+}
+```
+
+#### Delete Category
+**DELETE** `/api/categories/{id}`
+**Response (200 OK):**
+```json
+{
+  "message": "Category deleted"
+}
+```
+
+### Products
+
+#### Create Product
+**POST** `/api/products`
+```json
+{
+  "name": "Smartphone",
+  "description": "iPhone 16 Pro",
+  "category": "687b837f9c6215664b82b23a",
+  "price": 1200,
+  "discount": 10,
+  "variants": [
+    { "size": "128GB", "color": "Black", "inventory": 5 },
+    { "size": "256GB", "color": "Silver", "inventory": 2 }
+  ],
+  "inventory": 7
+}
+```
+**Response (201 Created):**
+```json
+{
+  "_id": "687b85c79c6215664b82b248",
+  "name": "Smartphone",
+  "description": "iPhone 16 Pro",
+  "category": {
+    "_id": "687b837f9c6215664b82b23a",
+    "name": "Electronics",
+    "description": "All electronic items"
+  },
+  "price": 1200,
+  "discount": 10,
+  "variants": [
+    { "size": "128GB", "color": "Black", "inventory": 5 },
+    { "size": "256GB", "color": "Silver", "inventory": 2 }
+  ],
+  "inventory": 7,
+  "createdAt": "2025-07-19T11:37:35.390Z",
+  "updatedAt": "2025-07-19T11:37:35.390Z"
+}
+```
+
+#### Get Products with Filters
+**GET** `/api/products?name=phone&minPrice=1000&maxPrice=1300`
+**Response (200 OK):**
+```json
+[
+  {
+    "_id": "687b85c79c6215664b82b248",
+    "name": "Smartphone",
+    "description": "iPhone 16 Pro",
+    "category": {
+      "_id": "687b837f9c6215664b82b23a",
+      "name": "Electronics"
+    },
+    "price": 1200,
+    "discount": 10,
+    "variants": [...],
+    "inventory": 7
+  }
+]
+```
+
+#### Low Stock Report
+**GET** `/api/products/report/low-stock?threshold=5`
+**Response (200 OK):**
+```json
+[
+  {
+    "_id": "687b85c79c6215664b82b248",
+    "name": "Smartphone",
+    "inventory": 3
+  }
+]
+```
+
+### Error Responses
+
+#### Validation Error (400 Bad Request)
+```json
+{
+  "errors": [
+    {
+      "type": "field",
+      "value": "Electronics",
+      "msg": "Invalid value",
+      "path": "category",
+      "location": "body"
+    }
+  ]
+}
+```
+
+#### Not Found (404 Not Found)
+```json
+{
+  "message": "Product not found"
+}
+```
+
+#### Invalid Category (400 Bad Request)
+```json
+{
+  "message": "Invalid category"
+}
+```
+
+### Status Codes
+
+| Code | Description | Usage |
+|------|-------------|-------|
+| 200  | OK | Successful GET, PUT, DELETE operations |
+| 201  | Created | Successful POST operations |
+| 400  | Bad Request | Validation errors, invalid data |
+| 404  | Not Found | Resource not found |
+| 500  | Internal Server Error | Server errors |
+
 ## Features
 - Product & category CRUD
 - Product variants (size, color, etc.)
