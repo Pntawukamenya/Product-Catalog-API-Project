@@ -247,7 +247,8 @@ All endpoints, request/response formats, and examples are documented there using
 - Interactive Swagger docs
 
 ## Testing
-Use [Postman](https://www.postman.com/) or [Insomnia](https://insomnia.rest/) to test endpoints. Example requests and responses are available in the Swagger UI.
+I used [Postman](https://www.postman.com/) to test endpoints. 
+Example requests and responses are available in the Swagger UI.
 
 ## Assumptions & Limitations
 - No authentication/authorization (public API)
